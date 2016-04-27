@@ -1,27 +1,23 @@
 package hbazargan.accountmanager;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
-import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.util.AndroidException;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by Laptop1 on 4/25/2016.
  */
 public class ContactsSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    private static final String TAG = "ContactsSyncAdapter";
+    private final String TAG = getContext().getResources().getString(R.string.log_tag);
+    private final String LABEL = getContext().getResources().getString(R.string.label);
 
     private final ContentResolver mContentResolver;
 
@@ -46,10 +42,6 @@ public class ContactsSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
-        Log.d("HBazargan", "onPerformSync for account[" + account.name + "]");
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
+        Log.d(LABEL, TAG + " onPerformSync for account[" + account.name + "]");
     }
 }

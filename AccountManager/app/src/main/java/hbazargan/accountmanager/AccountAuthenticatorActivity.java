@@ -10,20 +10,22 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static hbazargan.accountmanager.AccountAuthenticatorConstant.ARG_ACCOUNT_NAME;
+import static hbazargan.accountmanager.AccountAuthenticatorConstant.ARG_ACCOUNT_TYPE;
+import static hbazargan.accountmanager.AccountAuthenticatorConstant.ARG_AUTH_TYPE;
+import static hbazargan.accountmanager.AccountAuthenticatorConstant.ARG_IS_ADDING_NEW_ACCOUNT;
+import static hbazargan.accountmanager.AccountAuthenticatorConstant.AUTHTOKEN_TYPE_FULL_ACCESS;
+import static hbazargan.accountmanager.AccountAuthenticatorConstant.KEY_ERROR_MESSAGE;
+import static hbazargan.accountmanager.AccountAuthenticatorConstant.PARAM_USER_PASS;
+import static hbazargan.accountmanager.AccountAuthenticatorConstant.sServerAuthenticate;
+
 public class AccountAuthenticatorActivity extends android.accounts.AccountAuthenticatorActivity {
 
-    public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
-    public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
-    public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
-    public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
-
-    public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
-
-    public final static String PARAM_USER_PASS = "USER_PASS";
 
     private final int REQ_SIGNUP = 1;
 
-    private final String TAG = this.getClass().getSimpleName();
+    private final String TAG = getResources().getString(R.string.log_tag);
+    private final String LABEL = getResources().getString(R.string.label);
 
     private AccountManager mAccountManager;
     private String mAuthTokenType;
@@ -40,7 +42,7 @@ public class AccountAuthenticatorActivity extends android.accounts.AccountAuthen
         String accountName = getIntent().getStringExtra(ARG_ACCOUNT_NAME);
         mAuthTokenType = getIntent().getStringExtra(ARG_AUTH_TYPE);
         if (mAuthTokenType == null)
-            mAuthTokenType = AccountAuthenticatorConstant.AUTHTOKEN_TYPE_FULL_ACCESS;
+            mAuthTokenType = AUTHTOKEN_TYPE_FULL_ACCESS;
 
         if (accountName != null) {
             ((TextView)findViewById(R.id.accountName)).setText(accountName);
@@ -86,12 +88,12 @@ public class AccountAuthenticatorActivity extends android.accounts.AccountAuthen
             @Override
             protected Intent doInBackground(String... params) {
 
-                Log.d("HBazargan", TAG + "> Started authenticating");
+                Log.d(LABEL, TAG + "> Started authenticating");
 
                 String authtoken;
                 Bundle data = new Bundle();
                 try {
-                    authtoken = AccountAuthenticatorConstant.sServerAuthenticate.userSignIn(userName, userPass, mAuthTokenType);
+                    authtoken = sServerAuthenticate.userSignIn(userName, userPass, mAuthTokenType);
 
                     data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
                     data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
@@ -119,14 +121,14 @@ public class AccountAuthenticatorActivity extends android.accounts.AccountAuthen
     }
 
     private void finishLogin(Intent intent) {
-        Log.d("HBazargan", TAG + "> finishLogin");
+        Log.d(LABEL, TAG + "> finishLogin");
 
         String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
         String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
         final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
 
         if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
-            Log.d("HBazargan", TAG + "> finishLogin > addAccountExplicitly");
+            Log.d(LABEL, TAG + "> finishLogin > addAccountExplicitly");
             String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
             String authtokenType = mAuthTokenType;
 
@@ -135,7 +137,7 @@ public class AccountAuthenticatorActivity extends android.accounts.AccountAuthen
             mAccountManager.addAccountExplicitly(account, accountPassword, null);
             mAccountManager.setAuthToken(account, authtokenType, authtoken);
         } else {
-            Log.d("HBazargan", TAG + "> finishLogin > setPassword");
+            Log.d(LABEL, TAG + "> finishLogin > setPassword");
             mAccountManager.setPassword(account, accountPassword);
         }
 

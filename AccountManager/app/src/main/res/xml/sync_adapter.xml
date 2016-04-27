@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentAuthority="com.android.contacts"
-    android:accountType="com.hbazargan.accountmanager"
-    android:userVisible="true"
+    android:accountType="@string/account_type"
     android:allowParallelSyncs="false"
+    android:contentAuthority="com.android.contacts"
     android:isAlwaysSyncable="true"
-    android:supportsUploading="true"/>
+    android:supportsUploading="true"
+    android:userVisible="true" />

@@ -2,7 +2,9 @@
 <resources>
     <string name="app_name">AccountAuthenticator</string>
     <string name="label">HBazargan</string>
+    <string name="account_type">com.hbazargan.accountmanager</string>
 
     <string name="signup_title">Create new account</string>
     <string name="login_label">Log in</string>
+    <string name="log_tag">HBazarganAuthenticator</string>
 </resources>
