@@ -75,6 +75,20 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         // the server for an appropriate AuthToken.
         final AccountManager am = AccountManager.get(mContext);
 
+        // Check for exist acount
+        boolean isInvalidAccount = true;
+        for (Account tempAccount : am.getAccounts()) {
+            if (tempAccount.equals(account)) {
+                isInvalidAccount = false;
+                break;
+            }
+        }
+        if (isInvalidAccount) {
+            final Bundle result = new Bundle();
+            result.putString(AccountManager.KEY_ERROR_MESSAGE, "account does not exists");
+            return result;
+        }
+
         String authToken = am.peekAuthToken(account, authTokenType);
 
         Log.d(LABEL, TAG + "> peekAuthToken returned - " + authToken);
