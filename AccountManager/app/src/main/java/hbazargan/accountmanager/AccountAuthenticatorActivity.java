@@ -1,18 +1,16 @@
 package hbazargan.accountmanager;
 
 import android.accounts.Account;
-import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AuthenticatorActivity extends AccountAuthenticatorActivity {
+public class AccountAuthenticatorActivity extends android.accounts.AccountAuthenticatorActivity {
 
     public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
     public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
@@ -42,7 +40,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         String accountName = getIntent().getStringExtra(ARG_ACCOUNT_NAME);
         mAuthTokenType = getIntent().getStringExtra(ARG_AUTH_TYPE);
         if (mAuthTokenType == null)
-            mAuthTokenType = AccountConstant.AUTHTOKEN_TYPE_FULL_ACCESS;
+            mAuthTokenType = AccountAuthenticatorConstant.AUTHTOKEN_TYPE_FULL_ACCESS;
 
         if (accountName != null) {
             ((TextView)findViewById(R.id.accountName)).setText(accountName);
@@ -57,9 +55,9 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         findViewById(R.id.signUp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Since there can only be one AuthenticatorActivity, we call the sign up activity, get his results,
+                // Since there can only be one AccountAuthenticatorActivity, we call the sign up activity, get his results,
                 // and return them in setAccountAuthenticatorResult(). See finishLogin().
-                Intent signup = new Intent(getBaseContext(), SignUpActivity.class);
+                Intent signup = new Intent(getBaseContext(), AccountAuthenticatorSignUpActivity.class);
                 signup.putExtras(getIntent().getExtras());
                 startActivityForResult(signup, REQ_SIGNUP);
             }
@@ -90,10 +88,10 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
                 Log.d("HBazargan", TAG + "> Started authenticating");
 
-                String authtoken = null;
+                String authtoken;
                 Bundle data = new Bundle();
                 try {
-                    authtoken = AccountConstant.sServerAuthenticate.userSignIn(userName, userPass, mAuthTokenType);
+                    authtoken = AccountAuthenticatorConstant.sServerAuthenticate.userSignIn(userName, userPass, mAuthTokenType);
 
                     data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
                     data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);

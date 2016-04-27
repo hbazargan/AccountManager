@@ -4,14 +4,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-/**
- * Created by Laptop1 on 4/25/2016.
- */
-public class HbazarganAuthenticatorService extends Service {
+public class AccountAuthenticatorService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
 
-        HbazarganAuthenticator authenticator = new HbazarganAuthenticator(this);
+        AccountAuthenticator authenticator = new AccountAuthenticator(this);
         return authenticator.getIBinder();
     }
 }

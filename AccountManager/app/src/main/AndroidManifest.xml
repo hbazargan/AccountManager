@@ -30,14 +30,14 @@
         </activity>
 
         <activity
-            android:name=".SignUpActivity"
+            android:name=".AccountAuthenticatorSignUpActivity"
             android:label="@string/signup_title" />
 
         <activity
-            android:name=".AuthenticatorActivity"
+            android:name=".AccountAuthenticatorActivity"
             android:label="@string/login_label" />
 
-        <service android:name=".HbazarganAuthenticatorService">
+        <service android:name=".AccountAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>

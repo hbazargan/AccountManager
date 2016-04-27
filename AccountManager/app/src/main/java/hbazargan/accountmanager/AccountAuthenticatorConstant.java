@@ -1,9 +1,6 @@
 package hbazargan.accountmanager;
 
-/**
- * Created by Laptop1 on 4/25/2016.
- */
-public class AccountConstant {
+public class AccountAuthenticatorConstant {
 
     /**
      * Account type id
@@ -24,6 +21,6 @@ public class AccountConstant {
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS = "Full access";
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS_LABEL = "Full access to an HBazargan account";
 
-    public static final ServerAuthenticate sServerAuthenticate = new MeUServerAuthenticate();
+    public static final AccountServerAuthenticatorInterface sServerAuthenticate = new AccountServerAuthenticatorImplemented();
 
 }

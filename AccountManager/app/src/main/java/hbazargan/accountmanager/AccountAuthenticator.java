@@ -11,15 +11,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-/**
- * Created by Laptop1 on 4/25/2016.
- */
-public class HbazarganAuthenticator extends AbstractAccountAuthenticator {
+public class AccountAuthenticator extends AbstractAccountAuthenticator {
 
     private String TAG = "HBazarganAuthenticator";
     private final Context mContext;
 
-    public HbazarganAuthenticator(Context mContext) {
+    public AccountAuthenticator(Context mContext) {
         super(mContext);
         this.mContext = mContext;
     }
@@ -33,10 +30,10 @@ public class HbazarganAuthenticator extends AbstractAccountAuthenticator {
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
         Log.d("HBazargan", TAG + "> addAccount");
 
-        final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
-        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_TYPE, accountType);
-        intent.putExtra(AuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);
-        intent.putExtra(AuthenticatorActivity.ARG_IS_ADDING_NEW_ACCOUNT, true);
+        final Intent intent = new Intent(mContext, AccountAuthenticatorActivity.class);
+        intent.putExtra(AccountAuthenticatorActivity.ARG_ACCOUNT_TYPE, accountType);
+        intent.putExtra(AccountAuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);
+        intent.putExtra(AccountAuthenticatorActivity.ARG_IS_ADDING_NEW_ACCOUNT, true);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
 
         final Bundle bundle = new Bundle();
@@ -56,7 +53,7 @@ public class HbazarganAuthenticator extends AbstractAccountAuthenticator {
 
         // If the caller requested an authToken type we don't support, then
         // return an error
-        if (!authTokenType.equals(AccountConstant.AUTHTOKEN_TYPE_READ_ONLY) && !authTokenType.equals(AccountConstant.AUTHTOKEN_TYPE_FULL_ACCESS)) {
+        if (!authTokenType.equals(AccountAuthenticatorConstant.AUTHTOKEN_TYPE_READ_ONLY) && !authTokenType.equals(AccountAuthenticatorConstant.AUTHTOKEN_TYPE_FULL_ACCESS)) {
             final Bundle result = new Bundle();
             result.putString(AccountManager.KEY_ERROR_MESSAGE, "invalid authTokenType");
             return result;
@@ -76,7 +73,7 @@ public class HbazarganAuthenticator extends AbstractAccountAuthenticator {
             if (password != null) {
                 try {
                     Log.d("HBazargan", TAG + "> re-authenticating with the existing password");
-                    authToken = AccountConstant.sServerAuthenticate.userSignIn(account.name, password, authTokenType);
+                    authToken = AccountAuthenticatorConstant.sServerAuthenticate.userSignIn(account.name, password, authTokenType);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -94,12 +91,12 @@ public class HbazarganAuthenticator extends AbstractAccountAuthenticator {
 
         // If we get here, then we couldn't access the user's password - so we
         // need to re-prompt them for their credentials. We do that by creating
-        // an intent to display our AuthenticatorActivity.
-        final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
+        // an intent to display our AccountAuthenticatorActivity.
+        final Intent intent = new Intent(mContext, AccountAuthenticatorActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_TYPE, account.type);
-        intent.putExtra(AuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);
-        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_NAME, account.name);
+        intent.putExtra(AccountAuthenticatorActivity.ARG_ACCOUNT_TYPE, account.type);
+        intent.putExtra(AccountAuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);
+        intent.putExtra(AccountAuthenticatorActivity.ARG_ACCOUNT_NAME, account.name);
         final Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT, intent);
         return bundle;
@@ -107,10 +104,10 @@ public class HbazarganAuthenticator extends AbstractAccountAuthenticator {
 
     @Override
     public String getAuthTokenLabel(String authTokenType) {
-        if (AccountConstant.AUTHTOKEN_TYPE_FULL_ACCESS.equals(authTokenType))
-            return AccountConstant.AUTHTOKEN_TYPE_FULL_ACCESS_LABEL;
-        else if (AccountConstant.AUTHTOKEN_TYPE_READ_ONLY.equals(authTokenType))
-            return AccountConstant.AUTHTOKEN_TYPE_READ_ONLY_LABEL;
+        if (AccountAuthenticatorConstant.AUTHTOKEN_TYPE_FULL_ACCESS.equals(authTokenType))
+            return AccountAuthenticatorConstant.AUTHTOKEN_TYPE_FULL_ACCESS_LABEL;
+        else if (AccountAuthenticatorConstant.AUTHTOKEN_TYPE_READ_ONLY.equals(authTokenType))
+            return AccountAuthenticatorConstant.AUTHTOKEN_TYPE_READ_ONLY_LABEL;
         else
             return authTokenType + " (Label)";
     }

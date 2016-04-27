@@ -11,13 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * In charge of the Sign up process. Since it's not an AuthenticatorActivity decendent,
- * it returns the result back to the calling activity, which is an AuthenticatorActivity,
+ * In charge of the Sign up process. Since it's not an AccountAuthenticatorActivity decendent,
+ * it returns the result back to the calling activity, which is an AccountAuthenticatorActivity,
  * and it return the result back to the Authenticator
  *
  * User: udinic
  */
-public class SignUpActivity extends Activity {
+public class AccountAuthenticatorSignUpActivity extends Activity {
 
     private String TAG = getClass().getSimpleName();
     private String mAccountType;
@@ -26,7 +26,7 @@ public class SignUpActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAccountType = getIntent().getStringExtra(AuthenticatorActivity.ARG_ACCOUNT_TYPE);
+        mAccountType = getIntent().getStringExtra(AccountAuthenticatorActivity.ARG_ACCOUNT_TYPE);
 
         setContentView(R.layout.act_register);
 
@@ -60,17 +60,17 @@ public class SignUpActivity extends Activity {
 
                 Log.d("HBazargan", TAG + "> Started authenticating");
 
-                String authtoken = null;
+                String authtoken;
                 Bundle data = new Bundle();
                 try {
-                    authtoken = AccountConstant.sServerAuthenticate.userSignUp(name, accountName, accountPassword, AccountConstant.AUTHTOKEN_TYPE_FULL_ACCESS);
+                    authtoken = AccountAuthenticatorConstant.sServerAuthenticate.userSignUp(name, accountName, accountPassword, AccountAuthenticatorConstant.AUTHTOKEN_TYPE_FULL_ACCESS);
 
                     data.putString(AccountManager.KEY_ACCOUNT_NAME, accountName);
                     data.putString(AccountManager.KEY_ACCOUNT_TYPE, mAccountType);
                     data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
-                    data.putString(AuthenticatorActivity.PARAM_USER_PASS, accountPassword);
+                    data.putString(AccountAuthenticatorActivity.PARAM_USER_PASS, accountPassword);
                 } catch (Exception e) {
-                    data.putString(AuthenticatorActivity.KEY_ERROR_MESSAGE, e.getMessage());
+                    data.putString(AccountAuthenticatorActivity.KEY_ERROR_MESSAGE, e.getMessage());
                 }
 
                 final Intent res = new Intent();
@@ -80,8 +80,8 @@ public class SignUpActivity extends Activity {
 
             @Override
             protected void onPostExecute(Intent intent) {
-                if (intent.hasExtra(AuthenticatorActivity.KEY_ERROR_MESSAGE)) {
-                    Toast.makeText(getBaseContext(), intent.getStringExtra(AuthenticatorActivity.KEY_ERROR_MESSAGE), Toast.LENGTH_SHORT).show();
+                if (intent.hasExtra(AccountAuthenticatorActivity.KEY_ERROR_MESSAGE)) {
+                    Toast.makeText(getBaseContext(), intent.getStringExtra(AccountAuthenticatorActivity.KEY_ERROR_MESSAGE), Toast.LENGTH_SHORT).show();
                 } else {
                     setResult(RESULT_OK, intent);
                     finish();
